@@ -35,12 +35,35 @@ CREATE TABLE public.candidates
     PRIMARY KEY (id)
 );
 
+CREATE TABLE public.cities
+(
+    id integer NOT NULL,
+    city_name character varying(100) NOT NULL,
+    PRIMARY KEY (id)
+);
+
 CREATE TABLE public.employers
 (
     id integer NOT NULL,
     company_name character varying(255) NOT NULL,
     web_site character varying(255) NOT NULL,
     phone_number character varying(12) NOT NULL,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE public.job_positions
+(
+    id integer NOT NULL,
+    employer_id integer NOT NULL,
+    job_id integer NOT NULL,
+    city_id integer NOT NULL,
+    description text NOT NULL,
+    quota integer NOT NULL,
+    deadline date NOT NULL,
+    created_date time without time zone NOT NULL,
+    min_salary double precision NOT NULL,
+    max_salary double precision NOT NULL,
+    is_active boolean NOT NULL,
     PRIMARY KEY (id)
 );
 
@@ -115,6 +138,24 @@ ALTER TABLE public.candidates
 ALTER TABLE public.employers
     ADD FOREIGN KEY (id)
     REFERENCES public.users (id)
+    NOT VALID;
+
+
+ALTER TABLE public.job_positions
+    ADD FOREIGN KEY (city_id)
+    REFERENCES public.cities (id)
+    NOT VALID;
+
+
+ALTER TABLE public.job_positions
+    ADD FOREIGN KEY (employer_id)
+    REFERENCES public.employers (id)
+    NOT VALID;
+
+
+ALTER TABLE public.job_positions
+    ADD FOREIGN KEY (job_id)
+    REFERENCES public.jobs (id)
     NOT VALID;
 
 
